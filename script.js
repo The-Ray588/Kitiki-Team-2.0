@@ -82,3 +82,182 @@ function updateLanguage(){
     : "🇬🇧 EN";
 
 }
+const observer =
+new IntersectionObserver(
+
+(entries)=>{
+
+    entries.forEach(entry=>{
+
+        if(entry.isIntersecting){
+
+            entry.target.classList
+            .add("show");
+
+        }
+
+    });
+
+},
+{
+    threshold:0.2
+}
+
+);
+document
+.querySelectorAll(".fade-up")
+.forEach(element=>{
+
+    observer.observe(element);
+
+});
+const profile = {
+
+    nickname:
+    localStorage.getItem(
+      "nickname"
+    ) || "Гость",
+
+    role:
+    localStorage.getItem(
+      "role"
+    ) || "Посетитель"
+
+};
+function saveProfile(){
+
+    localStorage.setItem(
+      "nickname",
+      profile.nickname
+    );
+
+    localStorage.setItem(
+      "role",
+      profile.role
+    );
+
+}
+const nicknameInput =
+document.getElementById(
+"nicknameInput"
+);
+if(nicknameInput){
+
+    nicknameInput.value =
+    profile.nickname;
+
+    nicknameInput.addEventListener(
+    "input",
+    ()=>{
+
+        profile.nickname =
+        nicknameInput.value;
+
+        saveProfile();
+
+    });
+
+}
+const roleSelect =
+document.getElementById(
+"roleSelect"
+);
+if(roleSelect){
+
+    roleSelect.value =
+    profile.role;
+
+    roleSelect.addEventListener(
+    "change",
+    ()=>{
+
+        profile.role =
+        roleSelect.value;
+
+        saveProfile();
+
+    });
+
+}
+const avatarUpload =
+document.getElementById(
+"avatarUpload"
+);
+if(avatarUpload){
+
+avatarUpload.addEventListener(
+"change",
+(event)=>{
+
+const file =
+event.target.files[0];
+
+if(!file) return;
+
+const reader =
+new FileReader();
+
+reader.onload =
+function(e){
+
+localStorage.setItem(
+"avatar",
+e.target.result
+);
+
+};
+
+reader.readAsDataURL(
+file
+);
+
+});
+
+    }
+localStorage.setItem(
+"banner",
+e.target.result
+);
+window.addEventListener(
+"load",
+()=>{
+
+const avatar =
+localStorage.getItem(
+"avatar"
+);
+
+const banner =
+localStorage.getItem(
+"banner"
+);
+
+if(
+avatar &&
+document.querySelector(
+".profile-avatar img"
+)
+){
+
+document.querySelector(
+".profile-avatar img"
+).src = avatar;
+
+}
+
+if(
+banner &&
+document.querySelector(
+".profile-banner"
+)
+){
+
+document.querySelector(
+".profile-banner"
+).style.backgroundImage =
+`url(${banner})`;
+
+}
+
+});
+
